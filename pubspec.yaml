@@ -1,0 +1,49 @@
+name: shopify
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: ^3.8.1
+
+dependencies:
+  cloud_firestore: ^6.0.0
+  cupertino_icons: ^1.0.8
+  dartz: ^0.10.1
+  firebase_auth: ^6.0.1
+  firebase_core: ^4.0.0
+  flutter:
+    sdk: flutter
+  flutter_bloc: ^9.1.1
+  flutter_svg: ^2.2.0
+  get_it: ^8.2.0
+  hydrated_bloc: ^10.1.1
+  just_audio: ^0.10.4
+  path_provider: ^2.1.5
+
+dev_dependencies:
+  flutter_lints: ^5.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/fonts/
+    - assets/vectors/
+
+  fonts:
+    - family: Satoshi
+      fonts:
+        - asset: assets/fonts/Satoshi-Black.otf
+          weight: 900
+        - asset: assets/fonts/Satoshi-Bold.otf
+          weight: 600
+        - asset: assets/fonts/Satoshi-Light.otf
+          weight: 500
+        - asset: assets/fonts/Satoshi-Medium.otf
+          weight: 400
+        - asset: assets/fonts/Satoshi-Regular.otf
+          weight: 300
