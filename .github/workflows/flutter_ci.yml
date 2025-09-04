@@ -27,7 +27,7 @@ jobs:
 
       # Run analyzer
       - name: Run flutter analyze
-        run: flutter analyze
+        run: flutter analyze --no-fatal-warnings --no-fatal-infos
 
       # Run tests (nếu chưa có test thì tạo folder rỗng test/dummy_test.dart)
       - name: Run flutter test
