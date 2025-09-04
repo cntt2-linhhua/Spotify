@@ -31,10 +31,7 @@ jobs:
 
       # Run tests (nếu chưa có test thì tạo folder rỗng test/dummy_test.dart)
       - name: Run flutter test
-        run: |
-          mkdir -p test
-          echo "void main(){}" > test/dummy_test.dart
-          flutter test
+        run: flutter test
 
       # ✅ Fix iOS deployment target (>= 15.0 cho Firebase)
       - name: Set iOS deployment target
