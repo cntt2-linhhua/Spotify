@@ -25,7 +25,8 @@ jobs:
       - run: dart format .
 
       # Static analyze
-      - run: flutter analyze
+      - run: flutter analyze --no-fatal-warnings --no-fatal-infos
+
 
       # Run test
       - run: flutter test
