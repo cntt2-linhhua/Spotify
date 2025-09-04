@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Checkout code
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       # Setup Flutter
       - uses: subosito/flutter-action@v2
@@ -34,7 +34,7 @@ jobs:
       - run: flutter build apk --debug
 
       # Upload artifact (APK) để tải về
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: android-apk
           path: build/app/outputs/flutter-apk/app-debug.apk
@@ -42,22 +42,11 @@ jobs:
   build-test-ios:
     runs-on: macos-latest
     steps:
-      # Checkout code
-      - uses: actions/checkout@v3
-
-      # Setup Flutter
+      - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: "3.24.0"
-
-      # Cài dependencies
       - run: flutter pub get
-
-      # Analyze
       - run: flutter analyze
-
-      # Run test
       - run: flutter test
-
-      # Build iOS (no codesign để build CI nhanh)
       - run: flutter build ios --no-codesign
