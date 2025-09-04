@@ -1,0 +1,63 @@
+name: Flutter CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-test-android:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout code
+      - uses: actions/checkout@v3
+
+      # Setup Flutter
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.24.0" # chỉnh version Flutter bạn dùng
+
+      # Cài dependencies
+      - run: flutter pub get
+
+      # Kiểm tra format
+      - run: dart format --output=none --set-exit-if-changed .
+
+      # Static analyze
+      - run: flutter analyze
+
+      # Run test
+      - run: flutter test
+
+      # Build APK (debug/release tuỳ chọn)
+      - run: flutter build apk --debug
+
+      # Upload artifact (APK) để tải về
+      - uses: actions/upload-artifact@v3
+        with:
+          name: android-apk
+          path: build/app/outputs/flutter-apk/app-debug.apk
+
+  build-test-ios:
+    runs-on: macos-latest
+    steps:
+      # Checkout code
+      - uses: actions/checkout@v3
+
+      # Setup Flutter
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.24.0"
+
+      # Cài dependencies
+      - run: flutter pub get
+
+      # Analyze
+      - run: flutter analyze
+
+      # Run test
+      - run: flutter test
+
+      # Build iOS (no codesign để build CI nhanh)
+      - run: flutter build ios --no-codesign

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shopify/common/widgets/app_bottom_nav/app_bottom_nav.dart';
+import 'package:shopify/presentation/artists/page/artists.dart';
 import 'package:shopify/presentation/home/pages/home.dart';
 import 'package:shopify/presentation/profile/pages/profile.dart';
 
@@ -15,7 +16,7 @@ class _MainLayoutState extends State<MainLayout> {
 
   final List<Widget> _pages = const [
     HomePage(),
-    Center(child: Text("Discovery")),
+    ArtistsPage(),
     Center(child: Text("Favorites")),
     ProfilePage(),
   ];
