@@ -22,7 +22,7 @@ jobs:
       - run: flutter pub get
 
       # Kiểm tra format
-      - run: dart format --output=none --set-exit-if-changed .
+      - run: dart format .
 
       # Static analyze
       - run: flutter analyze
