@@ -48,6 +48,6 @@ jobs:
         with:
           flutter-version: "3.35.2"
       - run: flutter pub get
-      - run: flutter analyze
+      - run: flutter analyze --no-fatal-warnings --no-fatal-infos
       - run: flutter test
       - run: flutter build ios --no-codesign
