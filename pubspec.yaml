@@ -33,6 +33,7 @@ flutter:
     - assets/images/
     - assets/fonts/
     - assets/vectors/
+    - assets/json/
 
   fonts:
     - family: Satoshi

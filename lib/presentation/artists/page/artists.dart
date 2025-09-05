@@ -1,72 +1,70 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopify/common/widgets/appbar/app_bar.dart';
-import 'package:shopify/core/configs/constants/app_urls.dart';
-import 'package:shopify/domain/entities/song/song.dart';
-import 'package:shopify/presentation/home/bloc/news_songs_cubit.dart';
-import 'package:shopify/presentation/home/bloc/news_songs_state.dart';
-import 'package:shopify/presentation/song_player/pages/song_player.dart';
+import 'package:shopify/data/models/artist/artist.dart';
+import 'package:shopify/data/sources/artist/artist_fake_service.dart';
+import 'package:shopify/common/helpers/is_dark_mode.dart';
+import 'package:shopify/presentation/artists/page/artist_detail.dart';
 
 class ArtistsPage extends StatelessWidget {
-
   const ArtistsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => NewsSongsCubit()..getNewsSongs(),
-      child: Scaffold(
-        appBar: BasicAppbar(
-          title: const Text(
-            'Artists',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-          action: IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.more_vert_rounded),
-          ),
+    return Scaffold(
+      appBar: BasicAppbar(
+        title: const Text(
+          'Artists',
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
-        body: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-          child: BlocBuilder<NewsSongsCubit, NewsSongsState>(
-          builder: (context, state) {
-            if (state is NewsSongsLoading) {
-              return Container(
-                alignment: Alignment.center,
-                child: CircularProgressIndicator()
-                );
-            }
+        action: IconButton(
+          onPressed: () {},
+          icon: const Icon(Icons.more_vert_rounded),
+        ),
+      ),
+      body: FutureBuilder<List<Artist>>(
+        future: ArtistServiceImpl().getArtists(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-            if (state is NewsSongsLoaded) {
-              return _songs(state.songs);
-            }
+          if (snapshot.hasError) {
+            return Center(child: Text("Error: ${snapshot.error}"));
+          }
 
-            return Container();
-          },
-        ),
-        ),
+          if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(child: Text("No data available"));
+          }
+
+          final artists = snapshot.data!;
+          return SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+            child: _artists(context, artists),
+          );
+        },
       ),
     );
   }
 
-  Widget _songs(List<SongEntity> songs) {
+  Widget _artists(BuildContext context, List<Artist> artists) {
     return GridView.builder(
-          itemCount: songs.length,
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, // 2 cột
-            crossAxisSpacing: 16,
-            mainAxisSpacing: 20,
-            childAspectRatio: 0.95, // tỷ lệ width/height
-          ),
-          itemBuilder: (context, index) {
+      itemCount: artists.length,
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 16,
+        mainAxisSpacing: 8,
+        childAspectRatio: 0.9,
+      ),
+      itemBuilder: (context, index) {
         return GestureDetector(
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (BuildContext context) => SongPlayerPage(songEntity: songs[index]))
-            );
+              MaterialPageRoute(
+                builder: (context) => ArtistDetailPage(artistId: artists[index].id),
+            ));
           },
           child: SizedBox(
             width: 160,
@@ -75,7 +73,7 @@ class ArtistsPage extends StatelessWidget {
               children: [
                 ClipOval(
                   child: Image.network(
-                    '${AppUrls.coverStorage}${songs[index].artist}.jpg',
+                    artists[index].imageUrl,
                     width: 120,
                     height: 120,
                     fit: BoxFit.cover,
@@ -83,12 +81,27 @@ class ArtistsPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  songs[index].title,
-                  style: const TextStyle(
-                    color: Colors.white,
+                  artists[index].name,
+                  style: TextStyle(
+                    color: context.isDarkMode ? Colors.white : Color(0xff383838),
                     fontWeight: FontWeight.bold,
                   ),
                   textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
+                const SizedBox(height: 5),
+                Flexible(
+                  child: Text(
+                    artists[index].bio,
+                    style: TextStyle(
+                      color: context.isDarkMode ? Colors.white : Color(0xff383838),
+                      fontSize: 12,
+                    ),
+                    textAlign: TextAlign.left,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ],
             ),
@@ -97,5 +110,4 @@ class ArtistsPage extends StatelessWidget {
       },
     );
   }
-
 }
