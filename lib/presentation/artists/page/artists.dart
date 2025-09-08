@@ -20,6 +20,7 @@ class ArtistsPage extends StatelessWidget {
           onPressed: () {},
           icon: const Icon(Icons.more_vert_rounded),
         ),
+        hideBack: true,
       ),
       body: FutureBuilder<List<Artist>>(
         future: ArtistServiceImpl().getArtists(),

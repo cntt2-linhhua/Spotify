@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shopify/common/helpers/is_dark_mode.dart';
+import 'package:shopify/common/widgets/song_item/song_item.dart';
 import 'package:shopify/core/configs/theme/app_color.dart';
 import 'package:shopify/data/models/album/album.dart';
 import 'package:shopify/data/models/artist/artist.dart';
@@ -170,10 +171,8 @@ class _ArtistDetailPageState extends State<ArtistDetailPage> {
                     final songs = snapshot.data!;
                     return Column(
                       children: songs.map((song) {
-                        return ListTile(
-                          leading: const Icon(Icons.play_arrow),
-                          title: Text(song.title),
-                          subtitle: Text("${song.duration} sec"),
+                        return SongItem(
+                          song: song,
                           onTap: () {
                             // mở player
                           },

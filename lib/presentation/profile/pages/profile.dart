@@ -5,10 +5,11 @@ import 'package:shopify/common/widgets/appbar/app_bar.dart';
 import 'package:shopify/common/widgets/favorite_button/favorite_button.dart';
 import 'package:shopify/core/configs/constants/app_urls.dart';
 import 'package:shopify/presentation/home/bloc/play_list_cubit.dart';
-import 'package:shopify/presentation/profile/bloc/favorite_songs_cubit.dart';
-import 'package:shopify/presentation/profile/bloc/favorite_songs_state.dart';
+import 'package:shopify/presentation/favorite/bloc/favorite_songs_cubit.dart';
+import 'package:shopify/presentation/favorite/bloc/favorite_songs_state.dart';
 import 'package:shopify/presentation/profile/bloc/profile_info_cubit.dart';
 import 'package:shopify/presentation/profile/bloc/profile_info_state.dart';
+import 'package:shopify/presentation/song_player/bloc/song_player_cubit.dart';
 import 'package:shopify/presentation/song_player/pages/song_player.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -21,7 +22,7 @@ class ProfilePage extends StatelessWidget {
         BlocProvider(create: (_) => ProfileInfoCubit()..getUser()),
         // BlocProvider(create: (_) => FavoriteSongsCubit()..getFavoriteSongs()),
         BlocProvider(
-          create: (ctx) => FavoriteSongsCubit(ctx.read<PlayListCubit>()),
+          create: (ctx) => FavoriteSongsCubit(ctx.read<PlayListCubit>(), ctx.read<SongPlayerCubit>(),),
         ),
       ],
       child: Scaffold(

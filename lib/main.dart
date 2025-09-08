@@ -8,6 +8,7 @@ import 'package:shopify/core/configs/theme/app_theme.dart';
 import 'package:shopify/firebase_options.dart';
 import 'package:shopify/presentation/choose_mode/bloc/theme_cubit.dart';
 import 'package:shopify/presentation/home/bloc/play_list_cubit.dart';
+import 'package:shopify/presentation/favorite/bloc/favorite_songs_cubit.dart';
 import 'package:shopify/presentation/song_player/bloc/song_player_cubit.dart';
 import 'package:shopify/presentation/splash/pages/splash.dart';
 import 'package:shopify/service_locator.dart';
@@ -49,6 +50,12 @@ class MainApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => SongPlayerCubit(context.read<PlayListCubit>()),
+        ),
+        BlocProvider(
+          create: (ctx) => FavoriteSongsCubit(
+            ctx.read<PlayListCubit>(),
+            ctx.read<SongPlayerCubit>(),
+          ),
         ),
       ],
       child: BlocBuilder<ThemeCubit, ThemeMode>(
