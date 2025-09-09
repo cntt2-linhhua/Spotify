@@ -40,49 +40,8 @@ class FavoritePage extends StatelessWidget {
         children: [
           TopBar(onPlayAllTap: () => _onPlayAllTap(context)),
           const Expanded(child: FavoriteList()),
-          const _MiniPlayer(),
         ],
       ),
-    );
-  }
-}
-
-/// --- Mini player ---
-class _MiniPlayer extends StatelessWidget {
-  const _MiniPlayer();
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<SongPlayerCubit, SongPlayerState>(
-      buildWhen: (_, curr) => curr is SongPlayerLoaded,
-      builder: (context, state) {
-        if (state is! SongPlayerLoaded) return const SizedBox();
-
-        return Container(
-          color: Colors.black12,
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          child: Row(
-            children: [
-              const Icon(Icons.music_note),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  state.currentSong.title,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ),
-              IconButton(
-                icon: Icon(
-                  state.isPlaying ? Icons.pause_circle : Icons.play_circle,
-                  size: 32,
-                ),
-                onPressed: () => context.read<SongPlayerCubit>().playOrPauseSong(),
-              )
-            ],
-          ),
-        );
-      },
     );
   }
 }
